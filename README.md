@@ -1,3 +1,13 @@
+## Features
+
+- One-to-many relationship between Events and Sessions
+- One-to-one relationship between Speakers and Bios
+- Many-to-many relationship between Sessions and Speakers
+- JSON API endpoints for events, speakers, and sessions
+- Cascade deletes for:
+  - Event -> Sessions
+  - Speaker -> Bio
+
 # Lab: Flask SQLAlchemy Relationships
 
 ## Scenario
