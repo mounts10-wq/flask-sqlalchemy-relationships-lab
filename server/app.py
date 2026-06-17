@@ -15,11 +15,11 @@ migrate = Migrate(app, db)
 db.init_app(app)
 
 
-@app.route('/events', methods=['GET'])
+@app.route("/events", methods=["GET"])
 def get_events():
     events = Event.query.all()
 
-    event_list = [
+    events_data = [
         {
             "id": event.id,
             "name": event.name,
@@ -28,17 +28,17 @@ def get_events():
         for event in events
     ]
 
-    return jsonify(event_list), 200
+    return jsonify(events_data), 200
 
 
-@app.route('/events/<int:id>/sessions', methods=['GET'])
+@app.route("/events/<int:id>/sessions", methods=["GET"])
 def get_event_sessions(id):
-    event = Event.query.get(id)
+    event = db.session.get(Event, id)
 
     if not event:
         return jsonify({"error": "Event not found"}), 404
 
-    sessions = [
+    sessions_data = [
         {
             "id": session.id,
             "title": session.title,
@@ -47,14 +47,14 @@ def get_event_sessions(id):
         for session in event.sessions
     ]
 
-    return jsonify(sessions), 200
+    return jsonify(sessions_data), 200
 
 
-@app.route('/speakers', methods=['GET'])
+@app.route("/speakers", methods=["GET"])
 def get_speakers():
     speakers = Speaker.query.all()
 
-    speaker_list = [
+    speakers_data = [
         {
             "id": speaker.id,
             "name": speaker.name
@@ -62,12 +62,12 @@ def get_speakers():
         for speaker in speakers
     ]
 
-    return jsonify(speaker_list), 200
+    return jsonify(speakers_data), 200
 
 
-@app.route('/speakers/<int:id>', methods=['GET'])
+@app.route("/speakers/<int:id>", methods=["GET"])
 def get_speaker(id):
-    speaker = Speaker.query.get(id)
+    speaker = db.session.get(Speaker, id)
 
     if not speaker:
         return jsonify({"error": "Speaker not found"}), 404
@@ -81,14 +81,14 @@ def get_speaker(id):
     return jsonify(speaker_data), 200
 
 
-@app.route('/sessions/<int:id>/speakers', methods=['GET'])
+@app.route("/sessions/<int:id>/speakers", methods=["GET"])
 def get_session_speakers(id):
-    session = Session.query.get(id)
+    session = db.session.get(Session, id)
 
     if not session:
         return jsonify({"error": "Session not found"}), 404
 
-    speakers = [
+    speakers_data = [
         {
             "id": speaker.id,
             "name": speaker.name,
@@ -97,8 +97,8 @@ def get_session_speakers(id):
         for speaker in session.speakers
     ]
 
-    return jsonify(speakers), 200
+    return jsonify(speakers_data), 200
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(port=5555, debug=True)

@@ -7,7 +7,7 @@ metadata = MetaData(naming_convention={
 
 db = SQLAlchemy(metadata=metadata)
 
-# Association table for the many-to-many relationship
+# Association table for many-to-many relationship between sessions and speakers
 session_speakers = db.Table(
     "session_speakers",
     db.Column("session_id", db.Integer, db.ForeignKey("sessions.id"), primary_key=True),
@@ -16,7 +16,7 @@ session_speakers = db.Table(
 
 
 class Event(db.Model):
-    __tablename__ = 'events'
+    __tablename__ = "events"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
@@ -34,7 +34,7 @@ class Event(db.Model):
 
 
 class Session(db.Model):
-    __tablename__ = 'sessions'
+    __tablename__ = "sessions"
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
@@ -47,7 +47,7 @@ class Session(db.Model):
         back_populates="sessions"
     )
 
-    # Many-to-many: Session has many Speakers through session_speakers
+    # Many-to-many: Session has many Speakers
     speakers = db.relationship(
         "Speaker",
         secondary=session_speakers,
@@ -59,7 +59,7 @@ class Session(db.Model):
 
 
 class Speaker(db.Model):
-    __tablename__ = 'speakers'
+    __tablename__ = "speakers"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
@@ -72,7 +72,7 @@ class Speaker(db.Model):
         cascade="all, delete-orphan"
     )
 
-    # Many-to-many: Speaker has many Sessions through session_speakers
+    # Many-to-many: Speaker has many Sessions
     sessions = db.relationship(
         "Session",
         secondary=session_speakers,
@@ -84,7 +84,7 @@ class Speaker(db.Model):
 
 
 class Bio(db.Model):
-    __tablename__ = 'bios'
+    __tablename__ = "bios"
 
     id = db.Column(db.Integer, primary_key=True)
     bio_text = db.Column(db.Text, nullable=False)
